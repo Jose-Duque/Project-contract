@@ -1,38 +1,59 @@
 ﻿using System;
 using System.Globalization;
 using System.Collections.Generic;
+using FirstProject.Entities;
+using FirstProject.Entities.Enums;
 
+namespace FirstProject
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Enter department's name: ");
+            string dptName = Console.ReadLine();
+            Console.WriteLine("Enter worker data: ");
+            Console.Write("Name: ");
+            string name = Console.ReadLine();
+            Console.Write("Level (Junior/MidLevel/Senior): ");
+            WorkerLevel level = Enum.Parse<WorkerLevel>(Console.ReadLine());
+            Console.Write("Base Salary: ");
+            double baseSalary = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
 
-namespace FirstProject {
-    class Program {
-        static void Main(string[] args) {
+            Department department = new Department(dptName);
 
-            int m = int.Parse(Console.ReadLine());
+            Worker worker = new Worker(name, level, baseSalary, department);
+
+            Console.WriteLine("How many contracts to this worker? ");
             int n = int.Parse(Console.ReadLine());
 
-            int[,] matriz = new int[m, n];
+            for(int i = 1; i <= n; i++)
+            {
+                Console.WriteLine($"Enter #{i} contract data:");
+                Console.Write("Date (DD/MM/YYYY): ");
+                DateTime dateTime = DateTime.Parse(Console.ReadLine());
+                Console.Write("Value per (hours): ");
+                double valuePerHours = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                Console.Write("Duration (hours): ");
+                int hour = int.Parse(Console.ReadLine());
 
-            for (int linha = 0; linha < m; linha++) {
-                string[] value = Console.ReadLine().Split(' ');
-                for (int coluna = 0; coluna < n; coluna++) {
-                    matriz[linha,coluna] = int.Parse(value[coluna]);
-                }
+                HourContract hourContract = new HourContract(dateTime, valuePerHours, hour);
+
+                worker.AddContract(hourContract);
+                Console.WriteLine();
             }
-            for (int liha = 0; liha < m; liha++ ) {
-                
-                
-                for (int coluna = 0; coluna < n; coluna++) {
-                    if (matriz[liha,coluna] == 8) {
-                        Console.WriteLine(liha + ", " + coluna);
-                       
-                    }
-                    else if(liha <= 0) {
-                        Console.WriteLine("Left: " + matriz[liha, coluna]);
-                        
-                    }
-                   
-                }
-            }
+
+            Console.Write("Enter month and year to caculate income (MM/YYYY): ");
+            string[] monthYear =  Console.ReadLine().Split('/');
+            int month = int.Parse(monthYear[0]);
+            int year = int.Parse(monthYear[1]);
+
+            double income =  worker.Income(year, month);
+
+            
+            Console.WriteLine("Name: " + worker.Name);
+            Console.WriteLine("Department " + worker.Department.Name);
+            Console.WriteLine("Income for " + monthYear + ": " + income.ToString("F2",CultureInfo.InvariantCulture));
 
         }
 
