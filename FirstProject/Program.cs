@@ -53,7 +53,7 @@ namespace FirstProject
             
             Console.WriteLine("Name: " + worker.Name);
             Console.WriteLine("Department " + worker.Department.Name);
-            Console.WriteLine("Income for " + monthYear + ": " + income.ToString("F2",CultureInfo.InvariantCulture));
+            Console.WriteLine("Income for " + month + "/" + year + ": " + income.ToString("F2",CultureInfo.InvariantCulture));
 
         }
 
